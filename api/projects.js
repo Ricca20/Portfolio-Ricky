@@ -1,8 +1,43 @@
-import connectDB from '../../backend/src/config/db.js';
-import Project from '../../backend/src/models/Project.js';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// Project Schema
+const projectSchema = new mongoose.Schema({
+  _id: { type: String, required: true },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  image: { type: String, required: true },
+  tags: [String],
+  github: String,
+  demo: String,
+  featured: { type: Boolean, default: false }
+}, { timestamps: true });
+
+const Project = mongoose.models.Project || mongoose.model('Project', projectSchema);
+
+// MongoDB connection
+let cachedDb = null;
+
+async function connectDB() {
+  if (cachedDb) {
+    return cachedDb;
+  }
+  
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    cachedDb = conn;
+    console.log('MongoDB Connected');
+    return conn;
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    throw error;
+  }
+}
 
 // Connect to MongoDB
-connectDB();
+await connectDB();
 
 export default async function handler(req, res) {
   // Set CORS headers

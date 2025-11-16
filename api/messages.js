@@ -1,9 +1,67 @@
-import connectDB from '../../backend/src/config/db.js';
-import Message from '../../backend/src/models/Message.js';
-import { sendContactEmail } from '../../backend/src/utils/emailService.js';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+// Message Schema
+const messageSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  message: { type: String, required: true },
+  read: { type: Boolean, default: false }
+}, { timestamps: true });
+
+const Message = mongoose.models.Message || mongoose.model('Message', messageSchema);
+
+// MongoDB connection
+let cachedDb = null;
+
+async function connectDB() {
+  if (cachedDb) {
+    return cachedDb;
+  }
+  
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    cachedDb = conn;
+    console.log('MongoDB Connected');
+    return conn;
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    throw error;
+  }
+}
+
+// Email Service
+import nodemailer from 'nodemailer';
+
+async function sendContactEmail({ name, email, message }) {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS
+    }
+  });
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_TO,
+    subject: `New Portfolio Contact: ${name}`,
+    html: `
+      <h2>New Contact Form Submission</h2>
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>Email:</strong> ${email}</p>
+      <p><strong>Message:</strong></p>
+      <p>${message}</p>
+    `
+  };
+
+  await transporter.sendMail(mailOptions);
+}
 
 // Connect to MongoDB
-connectDB();
+await connectDB();
 
 export default async function handler(req, res) {
   // Set CORS headers
