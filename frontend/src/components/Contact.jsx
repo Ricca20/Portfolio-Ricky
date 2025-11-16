@@ -161,6 +161,8 @@ const Contact = () => {
                     validationErrors.name ? 'ring-2 ring-red-500' : ''
                   }`}
                   placeholder="First Name"
+                  aria-label="First Name"
+                  required
                 />
               </div>
 
@@ -172,6 +174,7 @@ const Contact = () => {
                     isDark ? 'bg-gray-800 text-white border-gray-700' : 'bg-gray-50 text-gray-900 border-gray-200'
                   } border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
                   placeholder="Last Name"
+                  aria-label="Last Name"
                 />
               </div>
             </div>
@@ -189,6 +192,8 @@ const Contact = () => {
                   validationErrors.email ? 'ring-2 ring-red-500' : ''
                 }`}
                 placeholder="Email"
+                aria-label="Email Address"
+                required
               />
             </div>
 
@@ -205,6 +210,8 @@ const Contact = () => {
                   validationErrors.subject ? 'ring-2 ring-red-500' : ''
                 }`}
                 placeholder="Subject"
+                aria-label="Message Subject"
+                required
               />
             </div>
 
@@ -221,6 +228,8 @@ const Contact = () => {
                   validationErrors.message ? 'ring-2 ring-red-500' : ''
                 }`}
                 placeholder="Message"
+                aria-label="Your Message"
+                required
               />
             </div>
 
@@ -230,6 +239,7 @@ const Contact = () => {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
+              aria-label="Send message"
               className={`w-full px-6 py-3 ${
                 isDark ? 'bg-cyan-600 hover:bg-cyan-500' : 'bg-cyan-600 hover:bg-cyan-700'
               } text-white rounded-md font-medium text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed font-body`}

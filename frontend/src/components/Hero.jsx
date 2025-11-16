@@ -41,7 +41,11 @@ const Hero = () => {
             <div className="relative w-64 h-80 md:w-72 md:h-96 lg:w-80 lg:h-[26rem]">
               <img
                 src="/profile.jpg"
-                alt="Ricky Perera"
+                alt="Ricky Perera - Full Stack Developer"
+                width="320"
+                height="416"
+                loading="eager"
+                fetchpriority="high"
                 className={`w-full h-full object-cover rounded-lg ${
                   isDark ? 'shadow-lg shadow-black/30' : 'shadow-lg shadow-gray-400/30'
                 }`}
@@ -94,6 +98,7 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
               <motion.a
                 href="#projects"
+                aria-label="View my projects"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={`px-6 py-3 ${
@@ -106,6 +111,7 @@ const Hero = () => {
               </motion.a>
               <motion.a
                 href="#contact"
+                aria-label="Contact me"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className={`px-6 py-3 ${

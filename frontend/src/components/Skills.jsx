@@ -91,6 +91,8 @@ const Skills = () => {
             <button
               key={category}
               onClick={() => setActiveCategory(category)}
+              aria-label={`Filter by ${category}`}
+              aria-pressed={activeCategory === category}
               className={`px-4 py-2 rounded-md text-sm font-medium transition-all font-body ${
                 activeCategory === category
                   ? isDark

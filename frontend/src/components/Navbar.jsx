@@ -105,6 +105,8 @@ const Navbar = () => {
                 isDark ? 'hover:bg-gray-800' : 'hover:bg-gray-100'
               } transition-all`}
               onClick={() => setIsOpen(!isOpen)}
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isOpen}
             >
               {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
             </motion.button>

@@ -52,6 +52,7 @@ const About = () => {
           <motion.a
             href="/Ricky Perera.pdf"
             download="Ricky_Perera_CV.pdf"
+            aria-label="Download Ricky Perera's CV"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className={`px-4 py-3 ${
@@ -95,6 +96,7 @@ const About = () => {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={link.label || `Visit ${link.url}`}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   className={`${

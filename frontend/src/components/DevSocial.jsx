@@ -84,9 +84,12 @@ const DevSocial = () => {
           <div className="w-full overflow-x-auto">
             <img
               src="https://ghchart.rshah.org/39d353/Ricca20"
-              alt="GitHub Contribution Graph"
+              alt="Ricky Perera's GitHub contribution graph showing commit activity"
               className="w-full mx-auto rounded-lg"
               style={{ minWidth: '700px', maxWidth: '100%' }}
+              loading="lazy"
+              width="700"
+              height="150"
             />
           </div>
         </motion.div>
