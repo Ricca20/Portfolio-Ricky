@@ -1,15 +1,22 @@
 {
+  "version": 2,
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
   "installCommand": "npm install --prefix frontend && npm install --prefix backend",
+  "functions": {
+    "api/*.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "/backend/src/index.js"
+      "destination": "/api/index.js"
     },
     {
       "source": "/health",
-      "destination": "/backend/src/index.js"
+      "destination": "/api/health.js"
     }
   ]
 }
