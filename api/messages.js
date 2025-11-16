@@ -80,37 +80,48 @@ export default async function handler(req, res) {
 
   if (req.method === 'POST') {
     try {
+      console.log('Received POST request to /api/messages');
+      console.log('Request body:', req.body);
+      
       const { name, email, message } = req.body;
 
       if (!name || !email || !message) {
+        console.log('Validation failed - missing fields');
         return res.status(400).json({
           success: false,
-          message: 'Please provide name, email, and message'
+          message: 'Please provide name, email, and message',
+          received: { name, email, message }
         });
       }
 
+      console.log('Creating message in database...');
       const newMessage = await Message.create({
         name,
         email,
         message
       });
+      console.log('Message created successfully:', newMessage._id);
 
-      // Send email notification (don't wait for it)
+      // Send email notification (don't fail if email fails)
       try {
+        console.log('Sending email notification...');
         await sendContactEmail({ name, email, message });
+        console.log('Email sent successfully');
       } catch (emailError) {
-        console.error('Email sending failed:', emailError);
+        console.error('Email sending failed (non-critical):', emailError.message);
       }
 
-      res.status(201).json({
+      return res.status(201).json({
         success: true,
-        data: newMessage
+        data: newMessage,
+        message: 'Message sent successfully'
       });
     } catch (error) {
       console.error('Error creating message:', error);
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
-        message: 'Failed to send message'
+        message: 'Failed to send message',
+        error: error.message
       });
     }
   } else if (req.method === 'GET') {
