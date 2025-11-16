@@ -36,9 +36,6 @@ async function connectDB() {
   }
 }
 
-// Connect to MongoDB
-await connectDB();
-
 export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -53,6 +50,9 @@ export default async function handler(req, res) {
     res.status(200).end();
     return;
   }
+
+  // Connect to MongoDB on each request
+  await connectDB();
 
   if (req.method === 'GET') {
     try {
