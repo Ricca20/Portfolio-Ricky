@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import axios from 'axios';
 
 dotenv.config();
 
@@ -64,9 +63,14 @@ async function sendContactEmail({ name, email, message }) {
 // Email Verification Service
 async function verifyEmail(email) {
   try {
-    const response = await axios.get(`https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY}&email=${email}`);
+    const response = await fetch(`https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY}&email=${email}`);
     
-    const { deliverability, is_valid_format, is_disposable_email, is_mx_found } = response.data;
+    if (!response.ok) {
+      throw new Error(`API returned ${response.status}`);
+    }
+    
+    const data = await response.json();
+    const { deliverability, is_valid_format, is_disposable_email, is_mx_found } = data;
     
     // Check if email is valid
     if (deliverability === 'UNDELIVERABLE' || 
