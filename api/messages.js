@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import axios from 'axios';
 
 dotenv.config();
 
@@ -60,6 +61,35 @@ async function sendContactEmail({ name, email, message }) {
   await transporter.sendMail(mailOptions);
 }
 
+// Email Verification Service
+async function verifyEmail(email) {
+  try {
+    const response = await axios.get(`https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY}&email=${email}`);
+    
+    const { deliverability, is_valid_format, is_disposable_email, is_mx_found } = response.data;
+    
+    // Check if email is valid
+    if (deliverability === 'UNDELIVERABLE' || 
+        !is_valid_format.value || 
+        is_disposable_email.value || 
+        !is_mx_found.value) {
+      return {
+        valid: false,
+        reason: deliverability === 'UNDELIVERABLE' ? 'Email is undeliverable' :
+                !is_valid_format.value ? 'Invalid email format' :
+                is_disposable_email.value ? 'Disposable email addresses are not allowed' :
+                'Invalid email domain'
+      };
+    }
+    
+    return { valid: true };
+  } catch (error) {
+    console.error('Email verification error:', error.message);
+    // If API fails, allow the email (don't block legitimate users)
+    return { valid: true };
+  }
+}
+
 export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -93,6 +123,19 @@ export default async function handler(req, res) {
           received: { name, email, message }
         });
       }
+
+      // Verify email using AbstractAPI
+      console.log('Verifying email address...');
+      const emailVerification = await verifyEmail(email);
+      
+      if (!emailVerification.valid) {
+        console.log('Email verification failed:', emailVerification.reason);
+        return res.status(400).json({
+          success: false,
+          message: emailVerification.reason
+        });
+      }
+      console.log('Email verified successfully');
 
       console.log('Creating message in database...');
       const newMessage = await Message.create({
