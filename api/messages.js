@@ -60,100 +60,6 @@ async function sendContactEmail({ name, email, message }) {
   await transporter.sendMail(mailOptions);
 }
 
-// Email Verification Service
-async function verifyEmail(email) {
-  // If API key is not configured, skip verification
-  if (!process.env.ABSTRACT_API_KEY) {
-    console.log('Email verification skipped - API key not configured');
-    return { valid: true };
-  }
-
-  try {
-    const response = await fetch(`https://emailvalidation.abstractapi.com/v1/?api_key=${process.env.ABSTRACT_API_KEY}&email=${email}`);
-    
-    if (!response.ok) {
-      throw new Error(`API returned ${response.status}`);
-    }
-    
-    const data = await response.json();
-    console.log('Email verification response:', JSON.stringify(data, null, 2));
-    
-    const { 
-      deliverability, 
-      is_valid_format, 
-      is_disposable_email, 
-      is_mx_found,
-      is_smtp_valid,
-      quality_score
-    } = data;
-    
-    // Strict validation checks
-    // 1. Check format
-    if (is_valid_format && !is_valid_format.value) {
-      console.log('Email rejected: Invalid format');
-      return {
-        valid: false,
-        reason: 'Invalid email format'
-      };
-    }
-    
-    // 2. Check if it's a disposable email
-    if (is_disposable_email && is_disposable_email.value) {
-      console.log('Email rejected: Disposable email');
-      return {
-        valid: false,
-        reason: 'Disposable email addresses are not allowed'
-      };
-    }
-    
-    // 3. Check MX records
-    if (is_mx_found && !is_mx_found.value) {
-      console.log('Email rejected: No MX records found');
-      return {
-        valid: false,
-        reason: 'Email domain does not exist'
-      };
-    }
-    
-    // 4. Check SMTP validation
-    if (is_smtp_valid && is_smtp_valid.value === false) {
-      console.log('Email rejected: SMTP validation failed');
-      return {
-        valid: false,
-        reason: 'Email address does not exist'
-      };
-    }
-    
-    // 5. Check deliverability
-    if (deliverability === 'UNDELIVERABLE') {
-      console.log('Email rejected: Undeliverable');
-      return {
-        valid: false,
-        reason: 'Email address is undeliverable'
-      };
-    }
-    
-    // 6. Check quality score (if available) - reject low quality emails
-    if (quality_score !== undefined && quality_score < 0.5) {
-      console.log('Email rejected: Low quality score');
-      return {
-        valid: false,
-        reason: 'Email address appears to be invalid'
-      };
-    }
-    
-    console.log('Email verification passed');
-    return { valid: true };
-  } catch (error) {
-    console.error('Email verification error:', error.message);
-    // If API fails, reject the email to be safe (changed from allowing it)
-    return { 
-      valid: false, 
-      reason: 'Unable to verify email address. Please try again later.' 
-    };
-  }
-}
-
 export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -187,19 +93,6 @@ export default async function handler(req, res) {
           received: { name, email, message }
         });
       }
-
-      // Verify email using AbstractAPI
-      console.log('Verifying email address...');
-      const emailVerification = await verifyEmail(email);
-      
-      if (!emailVerification.valid) {
-        console.log('Email verification failed:', emailVerification.reason);
-        return res.status(400).json({
-          success: false,
-          message: emailVerification.reason
-        });
-      }
-      console.log('Email verified successfully');
 
       console.log('Creating message in database...');
       const newMessage = await Message.create({
