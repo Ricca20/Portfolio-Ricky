@@ -40,7 +40,7 @@ const Hero = () => {
           >
             <div className="relative w-64 h-80 md:w-72 md:h-96 lg:w-80 lg:h-[26rem]">
               <img
-                src="/profile.jpg"
+                src="/profile2.jpg"
                 alt="Ricky Perera - Full Stack Developer"
                 width="320"
                 height="416"
