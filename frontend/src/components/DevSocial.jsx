@@ -53,9 +53,8 @@ const DevSocial = () => {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              className={`${
-                isDark ? 'text-gray-300 hover:text-cyan-400' : 'text-gray-600 hover:text-cyan-600'
-              } transition-colors text-2xl`}
+              className={`${isDark ? 'text-gray-300 hover:text-cyan-400' : 'text-gray-600 hover:text-cyan-600'
+                } transition-colors text-2xl`}
               title={social.name}
             >
               {social.icon}
@@ -80,10 +79,11 @@ const DevSocial = () => {
             </p>
           </div>
 
+
           {/* GitHub Contribution Calendar */}
           <div className="w-full overflow-x-auto">
             <img
-              src="https://ghchart.rshah.org/39d353/Ricca20"
+              src={`https://ghchart.rshah.org/${isDark ? '22d3ee' : '0891b2'}/Ricca20?t=${new Date().getTime()}`}
               alt="Ricky Perera's GitHub contribution graph showing commit activity"
               className="w-full mx-auto rounded-lg"
               style={{ minWidth: '700px', maxWidth: '100%' }}
