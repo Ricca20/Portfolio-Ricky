@@ -8,6 +8,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 import { ThemeProvider, useTheme } from './context/ThemeContext';
+import Experience from './components/Experience';
 import Education from './components/Education';
 
 function AppContent() {
@@ -21,6 +22,7 @@ function AppContent() {
         <Hero />
         <About />
         <DevSocial />
+        <Experience />
         <Projects />
         <Skills />
         <Education />
