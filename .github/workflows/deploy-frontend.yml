@@ -22,15 +22,17 @@ jobs:
         run: npm install -g vercel
 
       - name: Deploy to Vercel
+        if: ${{ secrets.VERCEL_TOKEN != '' && secrets.VERCEL_ORG_ID != '' && secrets.VERCEL_PROJECT_ID != '' }}
         run: |
           cd frontend
-          if [ -z "${VERCEL_TOKEN:-}" ]; then
-            echo "VERCEL_TOKEN secret is not set"
-            exit 1
-          fi
-
           vercel --prod --token "$VERCEL_TOKEN"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Missing Vercel secrets
+        if: ${{ secrets.VERCEL_TOKEN == '' || secrets.VERCEL_ORG_ID == '' || secrets.VERCEL_PROJECT_ID == '' }}
+        run: |
+          echo "Skipping Vercel deploy because one or more required secrets are missing."
+          echo "Set VERCEL_TOKEN, VERCEL_ORG_ID, and VERCEL_PROJECT_ID in repository secrets to enable deployment."
