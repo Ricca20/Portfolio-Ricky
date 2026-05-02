@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import { FiExternalLink, FiGithub, FiFigma, FiDownload, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { SiJira } from 'react-icons/si';
+import { SiJira, SiNotion } from 'react-icons/si';
 import { getTechStackColor } from '../utils/helpers';
 import { useTheme } from '../context/ThemeContext';
 
@@ -98,6 +98,38 @@ const Projects = () => {
       links: {
         github: 'https://github.com/Ricca20/Finance_Tracker-Mobile-App.git',
         apk: '#'
+      }
+    },
+    {
+      _id: '6',
+      title: 'MedStream – Healthcare Microservices Platform',
+      description: 'A microservices-based healthcare platform featuring specialized Payment and Notification services. Designed for high reliability, financial integrity, and multi-channel user engagement.',
+      role: 'Backend Microservices Developer',
+      techStack: ['Node.js', 'Express.js', 'MongoDB', 'Redis', 'Stripe API', 'Nodemailer', 'Twilio'],
+      highlights: [
+        'Implemented secure Payment Initialization, Gateway Integration, and automated revenue distribution.',
+        'Developed a robust Notification Service supporting Email, SMS, and In-app alerts with dynamic templates.',
+        'Built automated refund management and settlement tracking for clinics and practitioners.'
+      ],
+      links: {
+        github: 'https://github.com/yasindu-tech/MedStream.git',
+        live: '#'
+      }
+    },
+    {
+      _id: '7',
+      title: 'Accessmap – Accessibility Review & Discovery',
+      description: 'An accessibility-focused discovery platform that empowers the community to rate and review locations based on specific accessibility needs like wheelchair access, visual, and hearing support.',
+      role: 'Full-stack Developer & Feature Lead',
+      techStack: ['React.js', 'Node.js', 'MongoDB', 'Mongoose', 'AI Image Processing'],
+      highlights: [
+        'Built a redesigned Location Discovery system with AI-powered photo tagging for accessibility features.',
+        'Implemented a detailed multi-category Rating & Review system for comprehensive accessibility feedback.',
+        'Developed a "Quick Add" feature for users to rapidly contribute accessibility data for new locations.'
+      ],
+      links: {
+        github: 'https://github.com/Naduliweerasinghe/access-map.git',
+        live: 'https://access-map-three.vercel.app/'
       }
     }
   ];
@@ -231,6 +263,22 @@ const Projects = () => {
                         title="Jira"
                       >
                         <SiJira size={18} />
+                      </motion.a>
+                    )}
+                    {project.links.notion && (
+                      <motion.a
+                        whileHover={{ scale: 1.15 }}
+                        whileTap={{ scale: 0.95 }}
+                        href={project.links.notion}
+                        onClick={(e) => handleLinkClick(e, project.links.notion)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`${
+                          isDark ? 'text-gray-400 hover:text-white' : 'text-gray-500 hover:text-black'
+                        } transition-colors`}
+                        title="Notion Documentation"
+                      >
+                        <SiNotion size={18} />
                       </motion.a>
                     )}
                     {project.links.apk && (

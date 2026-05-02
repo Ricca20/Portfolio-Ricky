@@ -61,10 +61,10 @@ const Experience = () => {
                       {exp.role}
                     </h3>
                     <div className="flex items-center gap-2 mt-1">
-                      <a 
-                        href={exp.url} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
+                      <a
+                        href={exp.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className={`text-lg font-semibold ${isDark ? 'text-cyan-400 hover:text-cyan-300' : 'text-cyan-600 hover:text-cyan-700'} flex items-center gap-1 transition-colors`}
                       >
                         {exp.company}
@@ -73,7 +73,7 @@ const Experience = () => {
                       <span className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>• {exp.type}</span>
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-col md:items-end gap-1">
                     <div className={`flex items-center gap-1 text-sm ${isDark ? 'text-gray-300' : 'text-gray-600'} font-body`}>
                       <FiCalendar className={isDark ? 'text-cyan-400' : 'text-cyan-600'} />
@@ -94,11 +94,10 @@ const Experience = () => {
                   {exp.tech.map((skill, idx) => (
                     <span
                       key={idx}
-                      className={`px-3 py-1 text-xs font-medium rounded-full ${
-                        isDark 
-                          ? 'bg-gray-700 text-cyan-400 border border-gray-600' 
+                      className={`px-3 py-1 text-xs font-medium rounded-full ${isDark
+                          ? 'bg-gray-700 text-cyan-400 border border-gray-600'
                           : 'bg-cyan-50 text-cyan-700 border border-cyan-100'
-                      }`}
+                        }`}
                     >
                       {skill}
                     </span>
