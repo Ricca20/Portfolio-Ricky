@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf .next && next build",
+    "build": "rm -rf .next && next build && echo '--- COMPILED CSS FILES ---' && find .next/static -name '*.css' -exec echo 'FILE: {}' \\; -exec head -n 50 {} \\;",
     "start": "next start",
     "lint": "eslint"
   },
