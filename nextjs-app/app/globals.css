@@ -3,6 +3,10 @@
 
 @import "tailwindcss" source("..");
 
+@theme {
+  --spacing: 0.25rem;
+}
+
 
 * {
   margin: 0;
