@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf .next && next build && echo '--- COMPILED CSS FILES ---' && find .next/static -name '*.css' -exec echo 'FILE: {}' \\; -exec head -n 50 {} \\;",
+    "build": "rm -rf .next && next build && echo '--- CSS FILE DETAILS ---' && find .next/static -name '*.css' -exec ls -lh {} \\; -exec grep -o 'px-6' {} \\; -exec grep -o 'py-3' {} \\;",
     "start": "next start",
     "lint": "eslint"
   },
